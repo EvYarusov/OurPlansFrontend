@@ -4,12 +4,14 @@ import { useDispatch } from 'react-redux';
 import tasksSlice from './features/tasks/tasksSlice';
 import authSlice from './features/auth/authSlice';
 import eventsSlice from './features/events/eventsSlice';
+import usersSlice from './features/users/usersSlice';
 
 const store = configureStore({
   reducer: {
     auth: authSlice,
     tasks: tasksSlice,
     events: eventsSlice,
+    users: usersSlice,
   },
 });
 
