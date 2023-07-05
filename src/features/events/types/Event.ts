@@ -1,12 +1,14 @@
 export default interface Event {
     id: number;
-    created_at: Date;
-    author_id: number;
+    createdAt?: Date;
+    ownerId: number;
     title: string;
     description: string;
-    start_at: Date;
-    finish_at: Date;
+    startAt: string;
+    finishAt: string;
     place: string;
     category: string;
-    is_blocked: boolean;
+    isBlocked: boolean;
 }
+
+export type EventId = Event['id'];

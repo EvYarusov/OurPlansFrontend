@@ -26,7 +26,7 @@ function Login(): JSX.Element {
       // 332 проверяем, что санк login зарезолвился успешно
       if (login.fulfilled.match(dispatchResult)) {
         dispatch(getUser());
-        navigate('/');
+        navigate('/profile');
       }
 
       // 332 выводим в консоль ошибку если санк login зареджектился

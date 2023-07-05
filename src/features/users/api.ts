@@ -9,7 +9,7 @@ export async function getAllUsers(): Promise<{ users: User[] }> {
 // посмотреть пользователя по ID
 // - зарегистрированный пользователь (если искомый пользователь не заблокирован), админ
 export async function getUserById(id: UserId): Promise< User > {
-    const result = await fetch(`/api/users/${id}`);// поправить бэк и потом тут!!
+    const result = await fetch(`/api/users/${id}`);
     return result.json();
 }
 

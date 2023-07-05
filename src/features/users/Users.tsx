@@ -20,27 +20,26 @@ export default function Users(): JSX.Element {
 
     if (currentUser?.role !== 'ADMIN') { return <Navigate to="/" />; }
 
-        return (
-            <>
-                {
-                    userId ? <Outlet /> : (
-                        <ul>
-                            {
-                                users?.map((element) => (
-                                    <li key={element.id}>
-                                        <div>{element.userName}</div>
-                                        <div>{element.full_name}</div>
-                                        <div>{element.age}</div>
-                                        <div>{element.gender}</div>
-                                        <div>{`${element.blocked}`}</div>
-                                        <Link to={element.id.toString()}>К пользователю</Link>
-                                    </li>
-                                ))
-                            }
-                        </ul>
-                    )
-                }
-                <div />
-            </>
-        );
+    return (
+        <>
+            <div>Пользователи</div>
+            {
+                userId ? <Outlet /> : (
+                    <ul>
+                        {
+                            users?.map((element) => (
+                                <li key={element.id}>
+                                    <div>Ник:{' '}
+                                        <Link to={element.id.toString()}>{element.userName}</Link>
+                                    </div>
+                                    <div>Возраст: {element.age}</div>
+                                    <div>Пол: {element.gender}</div>
+                                </li>
+                            ))
+                        }
+                    </ul>
+                )
+            }
+        </>
+    );
 }

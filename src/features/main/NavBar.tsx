@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../store';
 import { logout } from '../auth/authSlice';
 import { selectUser } from '../auth/selectors';
@@ -9,7 +9,7 @@ function NavBar(): JSX.Element {
   const dispatch = useAppDispatch();
   const location = useLocation();
   const navigate = useNavigate();
-  const user = useSelector(selectUser);
+  const currentUser = useSelector(selectUser);
 
   const handleLogout = React.useCallback(
     async (event: React.MouseEvent) => {
@@ -21,48 +21,42 @@ function NavBar(): JSX.Element {
     },
     [dispatch, navigate]
   );
+
   return (
-    <div className="mb-3">
-      <p>{user?.email}</p>
-      {user && (
-        <div className="mb-3">
-          Добрый день, {user.email}.{' '}
-          <a href="#" role="button" tabIndex={0} onClick={handleLogout}>
-            Выйти
-          </a>
-        </div>
+    <div className="navbar-box">
+      <NavLink className="btn btn-light btn-lg" to="/categories">Категории</NavLink>
+      <NavLink className="btn btn-light btn-lg" to="/places">Локации</NavLink>
+      <NavLink className="btn btn-light btn-lg" to="/events">Мероприятия</NavLink>
+      {currentUser && currentUser.role === 'ADMIN' &&
+      <NavLink className="btn btn-light btn-lg" to="/users">Пользователи</NavLink>}
+      {/* <p>{user?.email}</p> */}
+      {currentUser && <NavLink className="btn btn-light btn-lg" to="/profile">{currentUser.email}</NavLink>}
+      {currentUser && (
+        <a href="#" className="btn btn-light btn-lg" role="button" tabIndex={0} onClick={handleLogout}>
+          Выйти
+        </a>
       )}
       <div>
-        {!user ? (
+        {!currentUser && (
           <>
-            <Link className="btn btn-light btn-lg ms-3" to="/auth/login">
+            <Link className="btn btn-light btn-lg" to="/auth/login">
               Войти
             </Link>
-            <Link className="btn btn-light btn-lg ms-3" to="/auth/register">
+            <Link className="btn btn-light btn-lg" to="/auth/register">
               Регистрация
             </Link>
           </>
-        ) : location.pathname === '/' ? (
-          (
-            user.role === 'ADMIN' ?
-              (
-                <Link className="btn btn-light btn-lg" to="/admin/tasks">
-                  Задачи всех пользователей
-                </Link>
-              )
-              :
-              (
-                <Link className="btn btn-light btn-lg" to="/tasks">
-                  Задачи текущего пользователя
-                </Link>
-              )
-          )
-        ) :
-          (
-            <Link className="btn btn-light btn-lg" to="/">
-              На главную
-            </Link>
-          )}
+        )}
+      </div>
+      <div>
+        {location.pathname === '/' ? (
+          <>
+          </>
+        ) : (
+          <Link className="btn btn-light btn-lg" to="/">
+            На главную
+          </Link>
+        )}
       </div>
     </div>
   );
