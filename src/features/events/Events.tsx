@@ -1,38 +1,52 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { Link, Outlet, useParams } from 'react-router-dom';
 import { selectEvents } from './selectors';
 import { useAppDispatch } from '../../store';
-import { getAllEvents, deleteEvent } from './eventsSlice';
+import { getAllEvents } from './eventsSlice';
+import { selectUser } from '../auth/selectors';
 
 export default function Events(): JSX.Element {
     const events = useSelector(selectEvents);
     const dispatch = useAppDispatch();
+    const { eventId } = useParams();
+
     useEffect(() => {
         dispatch(getAllEvents());
     }, [dispatch]);
+
+    const currentUser = useSelector(selectUser);
+
     return (
         <>
-            <div>Events</div>
-            {events.map((event) => (
-                <div key={event.id}>
-                    <div>{event.id}</div>
-                    <div>{event.title}</div>
-                    <div>{event.description}</div>
-                    <div>{event.start_at.getDate.arguments}</div>
-                    <div>{event.start_at.getTime.arguments}</div>
-                    <div>{event.finish_at.getDate.arguments}</div>
-                    <div>{event.finish_at.getTime.arguments}</div>
-                    <div>{event.place}</div>
-                    <div>{event.category}</div>
-                    <div>{event.author_id}</div>
-                    <button
-                      type="button"
-                      onClick={() => dispatch(deleteEvent(event.id))}
-                    >Delete
-                    </button>
-                </div>
-            )
-            )}
+            <div>Мероприятия</div>
+            {currentUser && currentUser.role === 'USER' && <Link to="add">Создать мероприятие</Link>}
+            {
+                eventId ? <Outlet /> : (
+                    <ul>
+                        {
+                            events?.map((element) => (
+                                <li key={element.id}>
+                                    <div>Название:{' '}
+                                        <Link to={element.id.toString()}>{element.title}</Link>
+                                    </div>
+                                    <div>Начало: {`${element.startAt}`}</div>
+                                    <div>Окончание: {`${element.finishAt}`}</div>
+                                    {currentUser && (currentUser.role === 'USER' || 'ADMIN') && (
+                                        <div>Автор:{' '}
+                                            {/* добавить на бэке имя автора
+                                            только админ может всех юзеров получить */}
+                                            <Link to={`author/${element.ownerId}`}>{element.ownerId}</Link>
+                                        </div>
+                                    )}
+                                    <div>Категория: {element.category}</div>
+                                    <div>Локация: {element.place}</div>
+                                </li>
+                            ))
+                        }
+                    </ul>
+                )
+            }
         </>
     );
 }

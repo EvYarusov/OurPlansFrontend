@@ -2,15 +2,26 @@ import { Routes, Route, HashRouter } from 'react-router-dom';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import './App.css';
-import Main from '../features/main/Main';
-// import TasksList from '../features/tasks/TasksList';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { LocalizationProvider } from '@mui/x-date-pickers';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import Layout from '../features/main/Layout';
 import Login from '../features/auth/Login';
 import Register from '../features/auth/Register';
 import { getUser } from '../features/auth/authSlice';
 import { selectAuthChecked } from '../features/auth/selectors';
 import { useAppDispatch } from '../store';
-import Tasks from '../features/tasks/Tasks';
-import AdminCabinet from '../features/main/AdminCabinet';
+import Users from '../features/users/Users';
+import UserPage from '../features/users/UserPage';
+import Events from '../features/events/Events';
+import AddEvent from '../features/events/AddEvent';
+import EventPage from '../features/events/EventPage';
+import Categories from '../features/categories/Categories';
+import Places from '../features/places/Places';
+import Profile from '../features/auth/Profile';
+import EventsByAuthor from '../features/events/EventsByAuthor';
+import { getAllEvents } from '../features/events/eventsSlice';
 
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -18,6 +29,7 @@ function App(): JSX.Element {
 
   React.useEffect(() => {
     dispatch(getUser());
+    dispatch(getAllEvents());
     // console.log(authChecked);
   }, [dispatch]);
 
@@ -30,16 +42,28 @@ function App(): JSX.Element {
   }
 
   return (
-    <HashRouter>
-      <Routes>
-        <Route path="/" element={<Main />}>
-          <Route path="/tasks" element={<Tasks />} />
-          <Route path="/auth/login" element={<Login />} />
-          <Route path="/auth/register" element={<Register />} />
-          <Route path="/admin/tasks" element={<AdminCabinet />} />
-        </Route>
-      </Routes>
-    </HashRouter>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <HashRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route path="/auth/login" element={<Login />} />
+            <Route path="/auth/register" element={<Register />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/users" element={<Users />}>
+              <Route path=":userId" element={<UserPage />} />
+            </Route>
+            <Route path="/events/add" element={<AddEvent />} />
+            <Route path="/events/author/:authorId" element={<EventsByAuthor />} />
+            <Route path="/events" element={<Events />}>
+
+              <Route path=":eventId" element={<EventPage />} />
+            </Route>
+            <Route path="/categories" element={<Categories />} />
+            <Route path="/places" element={<Places />} />
+          </Route>
+        </Routes>
+      </HashRouter>
+    </LocalizationProvider>
   );
 }
 
