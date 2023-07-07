@@ -7,6 +7,7 @@ const initialState: EventsState = {
   events: [],
   event: undefined,
   error: undefined,
+  members: [],
 };
 
 export const addEvent = createAsyncThunk('events/addEvent',
@@ -50,6 +51,22 @@ export const deleteEvent = createAsyncThunk('events/deleteEvent', (id: number) =
   api.deleteEvent(id)
 );
 
+export const attendEvent = createAsyncThunk('events/attendEvent', (id: EventId) =>
+  api.attendEvent(id)
+);
+
+export const retireEvent = createAsyncThunk('events/retireEvent', (id: EventId) =>
+  api.retireEvent(id)
+);
+
+export const getEventMembers = createAsyncThunk('events/getEventMembers', (id: EventId) =>
+  api.getEventMembers(id)
+);
+
+export const blockEvent = createAsyncThunk('events/blockEvent', ({ id, status }: { id: number, status: boolean }) =>
+  api.blockEvent(id, status)
+);
+
 const eventsSlice = createSlice({
   name: 'events',
   initialState,
@@ -88,6 +105,35 @@ const eventsSlice = createSlice({
         state.events = state.events.filter((event) => event.id !== action.payload.id);
       })
       .addCase(deleteEvent.rejected, (state, action) => {
+        state.error = action.error.message;
+      })
+      .addCase(getEventMembers.fulfilled, (state, action) => {
+        state.members = action.payload;
+      })
+      .addCase(getEventMembers.rejected, (state, action) => {
+        state.error = action.error.message;
+      })
+      .addCase(attendEvent.fulfilled, (state, action) => {
+        state.members = state.members.filter((member) => member.id !== action.payload);
+      })
+      .addCase(attendEvent.rejected, (state, action) => {
+        state.error = action.error.message;
+      })
+      .addCase(retireEvent.fulfilled, (state, action) => {
+        state.members = state.members.filter((member) => member.id !== action.payload);
+      })
+      .addCase(retireEvent.rejected, (state, action) => {
+        state.error = action.error.message;
+      })
+      .addCase(blockEvent.fulfilled, (state, action) => {
+        state.events = state.events.map((event) => {
+          if (event.id === action.payload.id) {
+            return action.payload;
+          }
+          return event;
+        });
+      })
+      .addCase(blockEvent.rejected, (state, action) => {
         state.error = action.error.message;
       });
   },

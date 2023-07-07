@@ -1,16 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import { selectCategories } from './selectors';
+import { useAppDispatch } from '../../store';
+import { getAllCategories } from './categoriesSlice';
 
 export default function Categories(): JSX.Element {
+  const categories = useSelector(selectCategories);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getAllCategories());
+  }, [dispatch]);
+
   return (
     <>
-      <div>Категории</div>
+      <div className="el">Категории</div>
       <div className="navbar-box">
-        <NavLink className="btn btn-light btn-lg" to="../events/place">Дети</NavLink>
-        <NavLink className="btn btn-light btn-lg" to="../events/place">Домашние животные</NavLink>
-        <NavLink className="btn btn-light btn-lg" to="../events/place">Настольные игры</NavLink>
-        <NavLink className="btn btn-light btn-lg" to="../events/place">Покупки</NavLink>
-        <NavLink className="btn btn-light btn-lg" to="../events/place">Спорт</NavLink>
+        {
+          categories?.map((element) => (
+            <NavLink className="btn btn-light btn-lg, el" to="../events">
+              {element}
+            </NavLink>
+          ))
+        }
       </div>
     </>
   );

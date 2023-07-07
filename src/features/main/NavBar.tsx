@@ -4,6 +4,7 @@ import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../store';
 import { logout } from '../auth/authSlice';
 import { selectUser } from '../auth/selectors';
+import style from './NavBar.module.css';
 
 function NavBar(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -23,41 +24,39 @@ function NavBar(): JSX.Element {
   );
 
   return (
-    <div className="navbar-box">
-      <NavLink className="btn btn-light btn-lg" to="/categories">Категории</NavLink>
-      <NavLink className="btn btn-light btn-lg" to="/places">Локации</NavLink>
-      <NavLink className="btn btn-light btn-lg" to="/events">Мероприятия</NavLink>
+    <div className={style.navbar}>
+      <NavLink className={style.navbarEl} to="/categories">Категории</NavLink>
+      <NavLink className={style.navbarEl} to="/places">Локации</NavLink>
+      <NavLink className={style.navbarEl} to="/events">Мероприятия</NavLink>
       {currentUser && currentUser.role === 'ADMIN' &&
-      <NavLink className="btn btn-light btn-lg" to="/users">Пользователи</NavLink>}
+        <NavLink className={style.navbarEl} to="/users">Пользователи</NavLink>}
       {/* <p>{user?.email}</p> */}
-      {currentUser && <NavLink className="btn btn-light btn-lg" to="/profile">{currentUser.email}</NavLink>}
+      {currentUser && <NavLink className={style.navbarEl} to="/profile">{currentUser.email}</NavLink>}
       {currentUser && (
-        <a href="#" className="btn btn-light btn-lg" role="button" tabIndex={0} onClick={handleLogout}>
+        <a href="#" className={style.navbarEl} role="button" tabIndex={0} onClick={handleLogout}>
           Выйти
         </a>
       )}
-      <div>
-        {!currentUser && (
-          <>
-            <Link className="btn btn-light btn-lg" to="/auth/login">
-              Войти
-            </Link>
-            <Link className="btn btn-light btn-lg" to="/auth/register">
-              Регистрация
-            </Link>
-          </>
-        )}
-      </div>
-      <div>
-        {location.pathname === '/' ? (
-          <>
-          </>
-        ) : (
-          <Link className="btn btn-light btn-lg" to="/">
-            На главную
+
+      {!currentUser && (
+        <>
+          <Link className={style.navbarEl} to="/auth/login">
+            Войти
           </Link>
-        )}
-      </div>
+          <Link className={style.navbarEl} to="/auth/register">
+            Регистрация
+          </Link>
+        </>
+      )}
+
+      {location.pathname === '/' ? (
+        <>
+        </>
+      ) : (
+        <Link className={style.navbarEl} to="/">
+          На главную
+        </Link>
+      )}
     </div>
   );
 }

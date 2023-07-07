@@ -16,12 +16,12 @@ import Users from '../features/users/Users';
 import UserPage from '../features/users/UserPage';
 import Events from '../features/events/Events';
 import AddEvent from '../features/events/AddEvent';
-import EventPage from '../features/events/EventPage';
 import Categories from '../features/categories/Categories';
 import Places from '../features/places/Places';
 import Profile from '../features/auth/Profile';
 import EventsByAuthor from '../features/events/EventsByAuthor';
 import { getAllEvents } from '../features/events/eventsSlice';
+import EventPage from '../features/events/EventPage';
 
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -55,7 +55,6 @@ function App(): JSX.Element {
             <Route path="/events/add" element={<AddEvent />} />
             <Route path="/events/author/:authorId" element={<EventsByAuthor />} />
             <Route path="/events" element={<Events />}>
-
               <Route path=":eventId" element={<EventPage />} />
             </Route>
             <Route path="/categories" element={<Categories />} />

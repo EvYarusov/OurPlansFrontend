@@ -78,9 +78,13 @@ export default function Events(): JSX.Element {
                 >
                     <option value="Дети">Дети</option>
                     <option value="Домашние животные">Домашние животные</option>
+                    <option value="Покупки">Кино</option>
                     <option value="Настольные игры">Настольные игры</option>
                     <option value="Покупки">Покупки</option>
+                    <option value="Покупки">Ремонт</option>
+                    <option value="Покупки">Рыбалка</option>
                     <option value="Спорт">Спорт</option>
+                    <option value="Покупки">Театр</option>
                 </select>
                 <input
                   required
