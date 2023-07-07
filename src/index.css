@@ -12,7 +12,18 @@ code {
     monospace;
 }
 
-.navbar-box {
+.сhildren-horizontally {
   display: inline-flex;
-  
+}
+
+.el {
+  margin: 10px;
+}
+
+.grey {
+  color:rgb(4, 128, 128);
+  text-decoration: none;
+}
+.grey:hover {
+  color: #433E0E;
 }

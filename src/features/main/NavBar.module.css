@@ -1,0 +1,22 @@
+.navbar {
+    height: 70px;
+    padding: 20 px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 35px;
+    background-color: #7C9082;
+    position: sticky;
+    top: 0;
+}
+
+.navbarEl {
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+}
+
+.navbarEl:hover {
+    color: #433E0E;
+}

@@ -1,3 +1,4 @@
+import User from '../users/types/User';
 import Event, { EventId } from './types/Event';
 
 // добавить мероприятие - зарегистрированный пользователь
@@ -55,8 +56,33 @@ export async function getAllMyEvents(): Promise<{ events: Event[] }> {
     return result.json();
 }
 
-// посмотреть мероприятия c моим участием - зарегистрированный пользователь
+// посмотреть мероприятия c моим участием - будет реализовано позже
 export async function getAllWithMe(): Promise<{ events: Event[] }> {
     const result = await fetch('/api/events/members/me');
+    return result.json();
+}
+
+// принять участие в мероприятии - зарегистрированный пользователь
+export async function attendEvent(id: EventId): Promise<number> {
+    const result = await fetch(`/api/events/${id}/members/me`, { method: 'POST' });
+    return result.json();
+}
+
+// посмотреть всех пользователей зарегистрировавшихся на мероприятие
+// - зарегистрированный пользователь, админ
+export async function getEventMembers(id: EventId): Promise<User[]> {
+    const result = await fetch(`/api/events/${id}/members`);
+    return result.json();
+}
+
+// покинуть мероприятие - зарегистрированный пользователь
+export async function retireEvent(id: EventId): Promise<number> {
+    const result = await fetch(`/api/events/${id}/members/me`, { method: 'PUT' });
+    return result.json();
+}
+
+// Заблокировать мероприятие - админ
+export async function blockEvent(id: EventId, status: boolean): Promise<Event> {
+    const result = await fetch(`/api/events/${id}/block?isBlock=${status}`, { method: 'PUT' });
     return result.json();
 }

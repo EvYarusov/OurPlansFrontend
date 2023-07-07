@@ -23,40 +23,43 @@ export default function Profile(): JSX.Element {
 
     return (
         <div>
-            <div>Личный кабинет</div>
+            <div className="el">Личный кабинет</div>
             {user && (
-                <div>
-                    <div>Ник: {user?.userName}</div>
-                    <div>Полное имя: {user?.full_name}</div>
-                    <div>Возраст: {user?.age}</div>
-                    <div>Пол: {user?.gender}</div>
-                    <div>Роль: {user?.role}</div>
-                    <div>Почта: {user?.email}</div>
-                    {user && user.role !== 'ADMIN' && (<div>Блокировка: {`${user?.blocked}`}</div>)}
+                <div className="el">
+                    <div className="el">Ник: {user?.userName}</div>
+                    <div className="el">Полное имя: {user?.full_name}</div>
+                    <div className="el">Возраст: {user?.age}</div>
+                    <div className="el">Пол: {user?.gender}</div>
+                    <div className="el">Роль: {user?.role}</div>
+                    <div className="el">Почта: {user?.email}</div>
+                    {user && user.role !== 'ADMIN' && (<div className="el">Блокировка: {`${user?.blocked}`}</div>)}
                 </div>
             )}
-            {currentUser && currentUser.role === 'USER' &&
-                <Link className="btn btn-light btn-lg" to="../events/add">Создать мероприятие</Link>}
-            <button
-              className="btn btn-light btn-lg"
-              type="button"
-              onClick={() => {
-                    setFlagMyEvents(true);
-                    setFlagEventsWithMe(false);
-                }}
-            >
-                Мероприятия где я автор
-            </button>
-            <button
-              className="btn btn-light btn-lg"
-              type="button"
-              onClick={() => {
-                    setFlagEventsWithMe(true);
-                    setFlagMyEvents(false);
-                }}
-            >
-                Мероприятия где я участник
-            </button>
+            {currentUser && currentUser.role === 'USER' && (
+                <>
+                    <Link className="btn btn-light btn-lg, el" to="../events/add">Создать мероприятие</Link>
+                    <button
+                      className="btn btn-light btn-lg, el"
+                      type="button"
+                      onClick={() => {
+                            setFlagMyEvents(true);
+                            setFlagEventsWithMe(false);
+                        }}
+                    >
+                        Мероприятия где я автор
+                    </button>
+                    <button
+                      className="btn btn-light btn-lg, el"
+                      type="button"
+                      onClick={() => {
+                            setFlagEventsWithMe(true);
+                            setFlagMyEvents(false);
+                        }}
+                    >
+                        Мероприятия где я участник
+                    </button>
+                </>
+              )}
             {events && (
                 <ul>
                     {

@@ -3,14 +3,16 @@ import { Link, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../store';
 import { blockUser, getUserById, unblockUser } from './usersSlice';
-import { selectUser } from './selectors';
+import { selectOneUser } from './selectors';
+import { selectUser } from '../auth/selectors';
 
 export default function UserPage(): JSX.Element {
     // const error = useSelector(selectError);
 
     const { userId } = useParams();
     const dispatch = useAppDispatch();
-    const user = useSelector(selectUser);
+    const user = useSelector(selectOneUser);
+    const currentUser = useSelector(selectUser);
 
     useEffect(() => {
         dispatch(getUserById(Number(userId)));
@@ -28,30 +30,40 @@ export default function UserPage(): JSX.Element {
     return (
         <div>{userId && (
             <div>
-                <div>Ник: {user?.userName}</div>
-                <div>Полное имя: {user?.full_name}</div>
-                <div>Возраст: {user?.age}</div>
-                <div>Пол: {user?.gender}</div>
-                <div>Роль: {user?.role}</div>
-                <div>Почта: {user?.email}</div>
-                {user && user.role !== 'ADMIN' && (
+                <div className="el">Ник: {user?.userName}</div>
+                <div className="el">Полное имя: {user?.full_name}</div>
+                <div className="el">Возраст: {user?.age}</div>
+                <div className="el">Пол: {user?.gender}</div>
+                <div className="el">Роль: {user?.role}</div>
+                <div className="el">Почта: {user?.email}</div>
+                {currentUser && currentUser.role === 'ADMIN' && (
                     <>
-                        <div>Блокировка: {`${user?.blocked}`}</div>
-                        <div>{!user.blocked && (
-                            <button type="button" onClick={() => handleBlock(user.id)}>
-                                Заблокировать пользователя
-                            </button>
-                          )}
-                        </div>
-                        <div>{user.blocked && (
-                            <button type="button" onClick={() => handleUnblock(user.id)}>
-                                Разблокировать пользователя
-                            </button>
-                          )}
-                        </div>
+                        <div className="el">Блокировка: {`${user?.blocked}`}</div>
+                        {user && user.userName !== 'admin' && (
+                            <div>
+                                {user && !user.blocked && (
+                                    <button
+                                      className="btn btn-light btn-lg, el"
+                                      type="button"
+                                      onClick={() => handleBlock(user.id)}
+                                    >
+                                        Заблокировать пользователя
+                                    </button>
+                                )}
+                                {user && user.blocked && (
+                                    <button
+                                      className="btn btn-light btn-lg, el"
+                                      type="button"
+                                      onClick={() => handleUnblock(user.id)}
+                                    >
+                                        Разблокировать пользователя
+                                    </button>
+                                )}
+                            </div>
+                        )}
+                        <Link className="btn btn-light btn-lg, el" to="..">К пользователям</Link>
                     </>
                 )}
-                <Link to="..">Назад к пользователям</Link>
             </div>
         )}
         </div>

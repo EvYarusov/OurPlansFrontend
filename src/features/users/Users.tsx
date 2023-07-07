@@ -18,17 +18,19 @@ export default function Users(): JSX.Element {
 
     const currentUser = useSelector(selectUser);
 
-    if (currentUser?.role !== 'ADMIN') { return <Navigate to="/" />; }
+    if (currentUser?.role !== 'USER' && currentUser?.role !== 'ADMIN') {
+        return <Navigate to="/" />;
+    }
 
     return (
         <>
-            <div>Пользователи</div>
+            <div className="el">Пользователи</div>
             {
                 userId ? <Outlet /> : (
                     <ul>
                         {
                             users?.map((element) => (
-                                <li key={element.id}>
+                                <li key={element.id} className="el">
                                     <div>Ник:{' '}
                                         <Link to={element.id.toString()}>{element.userName}</Link>
                                     </div>
